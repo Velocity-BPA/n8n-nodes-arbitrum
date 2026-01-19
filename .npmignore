@@ -1,0 +1,30 @@
+# Source files (dist is published)
+nodes/
+credentials/
+gulpfile.js
+
+# Config files
+tsconfig.json
+.eslintrc.js
+.prettierrc
+
+# Development files
+.git/
+.github/
+.vscode/
+*.log
+*.map
+
+# Test files
+test/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Documentation source
+docs/
+
+# Misc
+.DS_Store
+Thumbs.db
+*.tgz
