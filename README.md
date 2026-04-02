@@ -8,25 +8,25 @@
 >
 > For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
 
-A comprehensive n8n community node for interacting with the Arbitrum Layer 2 blockchain network. This node provides access to 5 core resources including bridge operations, transaction management, account queries, and block data retrieval, enabling seamless integration of Arbitrum blockchain functionality into your n8n workflows.
+A comprehensive n8n community node for interacting with Arbitrum blockchain networks. This node provides access to 5 core resources (Account, Transaction, Block, SmartContract, Network) with extensive operations for querying balances, transaction data, smart contract interactions, and network statistics across Arbitrum One and Arbitrum Nova.
 
 ![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-blue)
 ![License](https://img.shields.io/badge/license-BSL--1.1-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
-![Arbitrum](https://img.shields.io/badge/Arbitrum-Layer%202-42a5f5)
-![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-627eea)
-![DeFi](https://img.shields.io/badge/DeFi-Compatible-green)
+![Arbitrum](https://img.shields.io/badge/Arbitrum-Layer%202-blue)
+![Web3](https://img.shields.io/badge/Web3-Ethereum-green)
+![DeFi](https://img.shields.io/badge/DeFi-Compatible-orange)
 
 ## Features
 
-- **Bridge Operations** - Execute cross-layer transfers between Ethereum mainnet and Arbitrum networks
-- **Transaction Management** - Send, track, and analyze transactions on Arbitrum with detailed receipt information
-- **Account Monitoring** - Query account balances, transaction history, and wallet activities
-- **Block Data Access** - Retrieve comprehensive block information including transactions and metadata
-- **Gas Optimization** - Leverage Arbitrum's low-cost transaction fees for efficient blockchain operations
-- **Multi-Network Support** - Compatible with Arbitrum One and Arbitrum Nova networks
-- **Real-time Data** - Access live blockchain data with automatic retry mechanisms
-- **Developer Friendly** - Comprehensive error handling and detailed response formatting
+- **Account Management** - Query account balances, transaction history, and token holdings across Arbitrum networks
+- **Transaction Operations** - Send transactions, check status, estimate gas fees, and retrieve detailed transaction data
+- **Block Data Access** - Fetch block information, transaction lists, and blockchain statistics
+- **Smart Contract Integration** - Read contract state, execute functions, deploy contracts, and monitor events
+- **Network Utilities** - Access network information, gas pricing, and chain statistics
+- **Multi-Network Support** - Compatible with Arbitrum One, Arbitrum Nova, and testnets
+- **Comprehensive Error Handling** - Detailed error messages and retry mechanisms for robust automation
+- **Type Safety** - Full TypeScript implementation with proper type definitions
 
 ## Installation
 
@@ -61,107 +61,111 @@ n8n start
 
 | Field | Description | Required |
 |-------|-------------|----------|
-| API Key | Your Arbitrum API key for authenticated requests | Yes |
-| Network | Select target network (Arbitrum One, Arbitrum Nova) | Yes |
-| RPC Endpoint | Custom RPC endpoint URL (optional, uses default if empty) | No |
-| Private Key | Wallet private key for transaction signing (encrypted) | No* |
-
-*Required only for operations that create transactions
+| API Key | Arbitrum RPC endpoint API key or Infura/Alchemy key | Yes |
+| Network | Target Arbitrum network (arbitrum-one, arbitrum-nova, arbitrum-goerli) | Yes |
+| RPC URL | Custom RPC endpoint URL (optional if using standard networks) | No |
 
 ## Resources & Operations
 
-### 1. Bridge
+### 1. Account
 
 | Operation | Description |
 |-----------|-------------|
-| Deposit | Transfer tokens from Ethereum L1 to Arbitrum L2 |
-| Withdraw | Initiate withdrawal from Arbitrum L2 to Ethereum L1 |
-| Get Bridge Status | Check the status of pending bridge transactions |
-| Estimate Bridge Fees | Calculate gas costs for bridge operations |
-| Get Bridge History | Retrieve historical bridge transactions for an address |
+| Get Balance | Retrieve ETH balance for an account |
+| Get Token Balance | Get ERC-20 token balance for an account |
+| Get Transaction Count | Fetch nonce/transaction count for an account |
+| Get Transaction History | List transactions for an account with pagination |
+| Get Code | Retrieve contract bytecode for an account |
+| Get Storage | Read storage slots from an account |
 
 ### 2. Transaction
 
 | Operation | Description |
 |-----------|-------------|
-| Send Transaction | Execute a new transaction on Arbitrum network |
-| Get Transaction | Retrieve transaction details by transaction hash |
-| Get Transaction Receipt | Get transaction receipt with execution details |
-| Get Transaction Status | Check current status of a pending transaction |
-| Estimate Gas | Calculate gas requirements for transaction execution |
-| Get Pending Transactions | List pending transactions in mempool |
+| Send Transaction | Submit a new transaction to the network |
+| Get Transaction | Retrieve transaction details by hash |
+| Get Receipt | Get transaction receipt and status |
+| Estimate Gas | Calculate gas requirements for a transaction |
+| Get Gas Price | Fetch current gas price recommendations |
+| Wait for Confirmation | Poll until transaction is confirmed |
+| Trace Transaction | Get detailed execution trace |
 
-### 3. Account
-
-| Operation | Description |
-|-----------|-------------|
-| Get Balance | Retrieve ETH balance for specified address |
-| Get Token Balance | Get ERC-20 token balance for an address |
-| Get Transaction History | List all transactions for an account |
-| Get Nonce | Get current nonce value for transaction sequencing |
-| Validate Address | Verify if address format is valid |
-
-### 4. Block
+### 3. Block
 
 | Operation | Description |
 |-----------|-------------|
-| Get Block | Retrieve block data by block number or hash |
-| Get Latest Block | Get the most recent block information |
-| Get Block Transactions | List all transactions within a specific block |
-| Get Block Range | Retrieve multiple blocks within specified range |
-| Get Block Statistics | Get statistical data for block analysis |
+| Get Block | Retrieve block data by number or hash |
+| Get Latest Block | Fetch the most recent block |
+| Get Block Range | Get multiple blocks within a specified range |
+| Get Uncle Count | Count uncle blocks for a given block |
+| Search Blocks | Find blocks matching specific criteria |
+| Get Block Transactions | List all transactions in a block |
 
-### 5. Unknown (Partial)
+### 4. SmartContract
 
 | Operation | Description |
 |-----------|-------------|
-| Get Network Info | Retrieve general Arbitrum network information |
-| Get Gas Price | Get current gas price recommendations |
-| Call Contract | Execute read-only smart contract function calls |
+| Call Function | Execute a read-only contract function |
+| Send Function | Execute a state-changing contract function |
+| Deploy Contract | Deploy a new smart contract |
+| Get Events | Query contract events with filtering |
+| Encode Function Data | Encode function call data |
+| Decode Function Result | Decode function return values |
+| Get Contract Info | Retrieve contract metadata and ABI |
+
+### 5. Network
+
+| Operation | Description |
+|-----------|-------------|
+| Get Network Info | Fetch network details and chain ID |
+| Get Peer Count | Get number of connected peers |
+| Get Sync Status | Check network synchronization status |
+| Get Protocol Version | Retrieve network protocol version |
+| Get Mining Status | Check if network is mining/validating |
+| Get Hash Rate | Get current network hash rate |
+| Get Chain Stats | Comprehensive network statistics |
 
 ## Usage Examples
 
 ```javascript
-// Bridge ETH from L1 to L2
-{
-  "resource": "bridge",
-  "operation": "deposit",
-  "amount": "0.1",
-  "currency": "ETH",
-  "recipient": "0x742d35Cc6635C0532925a3b8D1d28E",
-  "gasLimit": "100000"
-}
-```
-
-```javascript
-// Check account balance
+// Get account balance
 {
   "resource": "account",
   "operation": "getBalance",
-  "address": "0x742d35Cc6635C0532925a3b8D1d28E",
+  "address": "0x742d35Cc6634C0532925a3b8D5C9E1C8b0F2b0e8",
   "blockTag": "latest"
 }
 ```
 
 ```javascript
-// Send transaction with gas estimation
+// Send ETH transaction
 {
   "resource": "transaction",
   "operation": "sendTransaction",
-  "to": "0x742d35Cc6635C0532925a3b8D1d28E",
-  "value": "1000000000000000000",
-  "data": "0x",
-  "gasPrice": "auto"
+  "to": "0x742d35Cc6634C0532925a3b8D5C9E1C8b0F2b0e8",
+  "value": "0.1",
+  "gasLimit": "21000",
+  "gasPrice": "0.5"
 }
 ```
 
 ```javascript
-// Retrieve latest block information
+// Call smart contract function
+{
+  "resource": "smartContract",
+  "operation": "callFunction",
+  "contractAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+  "functionName": "balanceOf",
+  "inputs": ["0x742d35Cc6634C0532925a3b8D5C9E1C8b0F2b0e8"]
+}
+```
+
+```javascript
+// Get latest block information
 {
   "resource": "block",
   "operation": "getLatestBlock",
-  "includeTransactions": true,
-  "format": "detailed"
+  "includeTransactions": true
 }
 ```
 
@@ -169,12 +173,12 @@ n8n start
 
 | Error | Description | Solution |
 |-------|-------------|----------|
-| Invalid API Key | Authentication failed with provided credentials | Verify API key is correct and has proper permissions |
-| Insufficient Balance | Account lacks funds for transaction execution | Check account balance and add sufficient ETH/tokens |
+| Invalid API Key | Authentication failed with RPC provider | Verify API key and network configuration |
+| Insufficient Funds | Account balance too low for transaction | Check account balance and reduce transaction amount |
 | Gas Limit Too Low | Transaction requires more gas than specified | Increase gas limit or use gas estimation |
-| Network Timeout | Request exceeded maximum response time | Retry request or check network connectivity |
-| Invalid Address | Provided address format is incorrect | Validate address format using checksum encoding |
-| Nonce Too Low | Transaction nonce is behind current account nonce | Get current nonce and increment appropriately |
+| Contract Not Found | Smart contract does not exist at address | Verify contract address and network |
+| Network Timeout | RPC request timed out | Check network connection and try again |
+| Invalid Parameters | Function parameters don't match ABI | Verify function signature and parameter types |
 
 ## Development
 
@@ -219,5 +223,5 @@ Contributions are welcome! Please ensure:
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Velocity-BPA/n8n-nodes-arbitrum/issues)
-- **Arbitrum Documentation**: [Official Arbitrum Docs](https://docs.arbitrum.io/)
-- **Developer Portal**: [Arbitrum Developer Center](https://developer.arbitrum.io/)
+- **Arbitrum Documentation**: [Arbitrum Developer Docs](https://developer.arbitrum.io/)
+- **Arbitrum Community**: [Arbitrum Discord](https://discord.gg/arbitrum)
